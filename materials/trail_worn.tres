@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/ground.gdshader" id="1_477ml"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_477ml")
+shader_parameter/albedo = Color(0.4, 0.27, 0.16, 1)
+shader_parameter/dapple_strength = 0.3
+shader_parameter/dapple_scale = 0.085
+shader_parameter/variation = 0.12
+shader_parameter/fade_start = null
+shader_parameter/fade_end = null
+shader_parameter/grain = 0.25
+shader_parameter/grain_scale = null

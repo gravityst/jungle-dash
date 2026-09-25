@@ -1,0 +1,200 @@
+[gd_scene format=4]
+
+[ext_resource type="Shader" path="res://shaders/sky.gdshader" id="1_ya4ey"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_eb6dy"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="3_trceg"]
+[ext_resource type="Script" path="res://scripts/track_manager.gd" id="4_a8y0u"]
+[ext_resource type="PackedScene" path="res://scenes/track_chunk.tscn" id="5_jkv2x"]
+[ext_resource type="PackedScene" path="res://scenes/chaser.tscn" id="6_jbj1t"]
+[ext_resource type="Script" path="res://scripts/chaser.gd" id="7_muem4"]
+[ext_resource type="Script" path="res://scripts/ambience.gd" id="8_dp3eg"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="9_0ld40"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="10_gqmmt"]
+[ext_resource type="Script" path="res://scripts/follow_camera.gd" id="11_yc10j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jscy8"]
+shader = ExtResource("1_ya4ey")
+shader_parameter/top_color = null
+shader_parameter/horizon_color = Color(0.34, 0.41, 0.38, 1)
+shader_parameter/sky_low_color = Color(0.66, 0.75, 0.69, 1)
+shader_parameter/cloud_lit = null
+shader_parameter/cloud_shade = null
+shader_parameter/cloud_cover = null
+shader_parameter/horizon_band = null
+
+[sub_resource type="Sky" id="Sky_pm3ni"]
+sky_material = SubResource("ShaderMaterial_jscy8")
+
+[sub_resource type="Environment" id="Environment_y6deb"]
+background_mode = 2
+sky = SubResource("Sky_pm3ni")
+ambient_light_source = 3
+ambient_light_color = Color(0.56, 0.64, 0.42, 1)
+ambient_light_sky_contribution = 0.55
+ambient_light_energy = 1.45
+tonemap_mode = 3
+tonemap_exposure = 0.95
+ssao_enabled = true
+ssao_radius = 1.4
+ssao_intensity = 1.2
+ssao_power = 1.1
+ssao_detail = 0.6
+glow_enabled = true
+glow_intensity = 0.35
+glow_blend_mode = 2
+glow_hdr_threshold = 1.5
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.34, 0.41, 0.38, 1)
+fog_density = 1.0
+fog_sky_affect = 0.0
+fog_height = 3.5
+fog_depth_curve = 1.4
+fog_depth_begin = 100.0
+fog_depth_end = 200.0
+adjustment_enabled = true
+adjustment_brightness = 1.03
+adjustment_contrast = 1.1
+adjustment_saturation = 1.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_og1vs"]
+cull_mode = 2
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.6
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_2wyq8"]
+_surfaces = [{
+"aabb": AABB(-0.058873795, 0, -0.0324, 0.11774759, 0.2, 0.04623799),
+"attribute_data": PackedByteArray("AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/AAAAPwAAAD8AAAA/"),
+"format": 34359738391,
+"material": SubResource("StandardMaterial3D_og1vs"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 96,
+"vertex_data": PackedByteArray("AAAAAAAAAABSSR07RQRZvW2DTT26uGI8AAAAAASJTT0W3Qc6AAAAAAAAAABSSR07AAAAAASJTT0W3Qc6AAAAAAAAAABSSR07AAAAAAAAAABSSR07AAAAAASJTT0W3Qc6RQRZPW2DTT26uGI8AAAAAAAAAABSSR07RQRZPW2DTT26uGI8AAAAAAAAAABSSR07RQRZvW2DTT26uGI8pm1svQCCzT1bqBk8AAAAAHWHzT2k/Ke7RQRZvW2DTT26uGI8AAAAAHWHzT2k/Ke7AAAAAASJTT0W3Qc6AAAAAASJTT0W3Qc6AAAAAHWHzT2k/Ke7pm1sPQCCzT1bqBk8AAAAAASJTT0W3Qc6pm1sPQCCzT1bqBk8RQRZPW2DTT26uGI8pm1svQCCzT1bqBk89q4avcYfGj73ZKS7AAAAALUjGj4SHm68pm1svQCCzT1bqBk8AAAAALUjGj4SHm68AAAAAHWHzT2k/Ke7AAAAAHWHzT2k/Ke7AAAAALUjGj4SHm689q4aPcYfGj73ZKS7AAAAAHWHzT2k/Ke79q4aPcYfGj73ZKS7pm1sPQCCzT1bqBk89q4avcYfGj73ZKS72AMBp83MTD5lGeK8AAAAAM3MTD5lGeK89q4avcYfGj73ZKS7AAAAAM3MTD5lGeK8AAAAALUjGj4SHm68AAAAALUjGj4SHm68AAAAAM3MTD5lGeK82AMBJ83MTD5lGeK8AAAAALUjGj4SHm682AMBJ83MTD5lGeK89q4aPcYfGj73ZKS7AAAAgAAAAABSSR27AAAAAJYQTD3q3Iu7xcVdvS0WTD2soBY8AAAAgAAAAABSSR27AAAAAAAAAABSSR27AAAAAJYQTD3q3Iu7AAAAAAAAAABSSR27xcVdPS0WTD2soBY8AAAAAJYQTD3q3Iu7AAAAAAAAAABSSR27AAAAAAAAAABSSR27xcVdPS0WTD2soBY8xcVdvS0WTD2soBY8AAAAACUSzD09xCG8piVxvZoXzD3EUJw7xcVdvS0WTD2soBY8AAAAAJYQTD3q3Iu7AAAAACUSzD09xCG8AAAAAJYQTD3q3Iu7piVxPZoXzD3EUJw7AAAAACUSzD09xCG8AAAAAJYQTD3q3Iu7xcVdPS0WTD2soBY8piVxPZoXzD3EUJw7piVxvZoXzD3EUJw7AAAAAH8PGT7Za528mlcfvW4TGT64vBy8piVxvZoXzD3EUJw7AAAAACUSzD09xCG8AAAAAH8PGT7Za528AAAAACUSzD09xCG8mlcfPW4TGT64vBy8AAAAAH8PGT7Za528AAAAACUSzD09xCG8piVxPZoXzD3EUJw7mlcfPW4TGT64vBy8mlcfvW4TGT64vBy8AAAAAM3MTD7dtQS92AMBp83MTD7dtQS9mlcfvW4TGT64vBy8AAAAAH8PGT7Za528AAAAAM3MTD7dtQS9AAAAAH8PGT7Za5282AMBJ83MTD7dtQS9AAAAAM3MTD7dtQS9AAAAAH8PGT7Za528mlcfPW4TGT64vBy82AMBJ83MTD7dtQS9/3//f/9/AIAmmD6HMGhNkv9/7YhUf8WE/3//f/9/AID/f+2IVH/FhP9//3//fwCA/3//f/9/AID/f+2IVH/FhNhnPodUlnKR/3//f/9/AIDYZz6HVJZykf9//3//fwCAJpg+hzBoTZLalraN5mdxlf9/sZCKfWmJJpg+hzBoTZL/f7GQin1pif9/7YhUf8WE/3/tiFR/xYT/f7GQin1piSRpto20kw6T/3/tiFR/xYQkabaNtJMOk9hnPodUlnKR2pa2jeZncZWxlYWT4GaRmP9/gpfretON2pa2jeZncZX/f4KX63rTjf9/sZCKfWmJ/3+xkIp9aYn/f4KX63rTjU1qhZOJkDCU/3+xkIp9aYlNaoWTiZAwlCRpto20kw6TsZWFk+BmkZj/f/9//38AgP9//3//fwCAsZWFk+BmkZj/f/9//38AgP9/gpfretON/3+Cl+t6043/f/9//38AgP9//3//fwCA/3+Cl+t6043/f/9//38AgE1qhZOJkDCU//////9/AIAQ9wAAVH/FhD4HJhgwaE2S//////9/AID//////38AgBD3AABUf8WE//////9/AIDA+CYYVJZykRD3AABUf8WE//////9/AID//////38AgMD4JhhUlnKRPgcmGDBoTZJM7wAAin1pibYN2xbmZ3GVPgcmGDBoTZIQ9wAAVH/FhEzvAACKfWmJEPcAAFR/xYRI8tsWtJMOk0zvAACKfWmJEPcAAFR/xYTA+CYYVJZykUjy2xa0kw6Ttg3bFuZncZV86AAA63rTjYYTsRXgZpGYtg3bFuZncZVM7wAAin1piXzoAADretONTO8AAIp9aYl47LEViZAwlHzoAADretONTO8AAIp9aYlI8tsWtJMOk3jssRWJkDCUhhOxFeBmkZj//////38AgP//////fwCAhhOxFeBmkZh86AAA63rTjf//////fwCAfOgAAOt6043//////38AgP//////fwCAfOgAAOt604147LEViZAwlP//////fwCA")
+}]
+
+[sub_resource type="Gradient" id="Gradient_vxglm"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.28, 0.44, 0.14, 1, 0.33, 0.36, 0.14, 1, 0.22, 0.34, 0.12, 1)
+
+[sub_resource type="Gradient" id="Gradient_2f3dj"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.6, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yq6so"]
+gradient = SubResource("Gradient_2f3dj")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fv21b"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("GradientTexture2D_yq6so")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_tel4y"]
+material = SubResource("StandardMaterial3D_fv21b")
+size = Vector2(0.035, 0.035)
+
+[sub_resource type="Gradient" id="Gradient_qkpxi"]
+offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
+colors = PackedColorArray(1, 1, 0.8, 0, 1, 1, 0.8, 0.9, 1, 1, 0.8, 0.9, 1, 1, 0.8, 0)
+
+[node name="Main" type="Node3D" unique_id=1079704262]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2124538090]
+environment = SubResource("Environment_y6deb")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=247934598]
+transform = Transform3D(0.8660254, 0.3345653, -0.3715724, 0, 0.7431448, 0.6691306, 0.5, -0.5794841, 0.6435823, 0, 0, 0)
+light_color = Color(1, 0.94, 0.8, 1)
+light_energy = 1.25
+shadow_enabled = true
+shadow_bias = 0.04
+shadow_normal_bias = 1.2
+shadow_opacity = 0.72
+directional_shadow_split_1 = 0.075
+directional_shadow_split_3 = 0.45
+directional_shadow_max_distance = 60.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="." unique_id=1893272728]
+transform = Transform3D(-0.46947157, 0.44147378, -0.764655, 0, 0.8660254, 0.5, 0.88294756, 0.23473579, -0.4065743, 0, 0, 0)
+light_color = Color(1, 0.85, 0.62, 1)
+light_energy = 0.5
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1539712082 groups=["player"] instance=ExtResource("2_eb6dy")]
+floor_snap_length = 0.5
+script = ExtResource("3_trceg")
+
+[node name="TrackManager" type="Node3D" parent="." unique_id=572327501 node_paths=PackedStringArray("player") groups=["track"]]
+script = ExtResource("4_a8y0u")
+chunk_scene = ExtResource("5_jkv2x")
+player = NodePath("../Player")
+
+[node name="Chaser" type="Node3D" parent="." unique_id=56314707 instance=ExtResource("6_jbj1t")]
+script = ExtResource("7_muem4")
+
+[node name="Ambience" type="AudioStreamPlayer" parent="." unique_id=1637950727]
+script = ExtResource("8_dp3eg")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=109479477 instance=ExtResource("9_0ld40")]
+script = ExtResource("10_gqmmt")
+
+[node name="FollowCamera" type="Camera3D" parent="." unique_id=1106690419 node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 7.2)
+current = true
+fov = 52.0
+script = ExtResource("11_yc10j")
+target = NodePath("../Player")
+
+[node name="Leaves" type="CPUParticles3D" parent="FollowCamera" unique_id=1004577826]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -18)
+cast_shadow = 0
+amount = 40
+lifetime = 3.2
+preprocess = 3.0
+mesh = SubResource("ArrayMesh_2wyq8")
+emission_shape = 3
+emission_box_extents = Vector3(9, 2.5, 14)
+direction = Vector3(0.3, -1, 0)
+spread = 35.0
+gravity = Vector3(0, -0.9, 0)
+initial_velocity_min = 0.4
+initial_velocity_max = 1.2
+angular_velocity_min = -220.0
+angular_velocity_max = 220.0
+angle_max = 360.0
+scale_amount_min = 0.5
+scale_amount_max = 0.9
+color_initial_ramp = SubResource("Gradient_vxglm")
+
+[node name="Pollen" type="CPUParticles3D" parent="FollowCamera" unique_id=2095288491]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -14)
+cast_shadow = 0
+amount = 110
+lifetime = 2.6
+preprocess = 2.6
+mesh = SubResource("QuadMesh_tel4y")
+emission_shape = 3
+emission_box_extents = Vector3(7, 2, 12)
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 0.05
+initial_velocity_max = 0.3
+color_ramp = SubResource("Gradient_qkpxi")

@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/ground.gdshader" id="1_lene3"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_lene3")
+shader_parameter/albedo = Color(0.1, 0.23, 0.12, 1)
+shader_parameter/dapple_strength = 0.3
+shader_parameter/dapple_scale = 0.07
+shader_parameter/variation = 0.18
+shader_parameter/fade_start = null
+shader_parameter/fade_end = null
+shader_parameter/grain = null
+shader_parameter/grain_scale = null

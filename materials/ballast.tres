@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/ground.gdshader" id="1_npvlv"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_npvlv")
+shader_parameter/albedo = Color(0.5, 0.45, 0.39, 1)
+shader_parameter/dapple_strength = 0.3
+shader_parameter/dapple_scale = 0.085
+shader_parameter/variation = 0.1
+shader_parameter/fade_start = null
+shader_parameter/fade_end = null
+shader_parameter/grain = 0.55
+shader_parameter/grain_scale = null

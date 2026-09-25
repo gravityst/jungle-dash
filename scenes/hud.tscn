@@ -1,0 +1,1595 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_6fi6k"]
+[ext_resource type="Shader" path="res://shaders/speed_lines.gdshader" id="2_uo2fv"]
+[ext_resource type="Script" path="res://scripts/power_icon.gd" id="3_047uy"]
+[ext_resource type="Script" path="res://scripts/coach.gd" id="4_5pdws"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hd3ao"]
+shader = ExtResource("2_uo2fv")
+shader_parameter/strength = null
+shader_parameter/centre = null
+
+[sub_resource type="Gradient" id="Gradient_0i1j5"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.9, 0.05, 0.02, 0, 0.9, 0.05, 0.02, 0, 0.85, 0.02, 0, 0.85)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mphia"]
+gradient = SubResource("Gradient_0i1j5")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1.05, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0m4u7"]
+content_margin_left = 22.0
+content_margin_top = 4.0
+content_margin_right = 22.0
+content_margin_bottom = 4.0
+bg_color = Color(0.05, 0.09, 0.05, 0.62)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.84, 0.36, 0.85)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apjy4"]
+content_margin_left = 12.0
+content_margin_top = 0.0
+content_margin_right = 12.0
+content_margin_bottom = 0.0
+bg_color = Color(0.3, 0.74, 0.18, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.95, 1, 0.8, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="SystemFont" id="SystemFont_5n1hp"]
+font_names = PackedStringArray("Arial Rounded MT Bold", "Arial Rounded MT", "Avenir Next", "Futura", "Helvetica Neue", "Arial")
+font_weight = 800
+
+[sub_resource type="LabelSettings" id="LabelSettings_eld54"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 40
+outline_size = 8
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3swnk"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 64
+outline_size = 12
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qkknv"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 30
+font_color = Color(0.9, 0.97, 0.84, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="Gradient" id="Gradient_uxdf7"]
+offsets = PackedFloat32Array(0, 0.5, 0.58, 0.66, 0.8, 0.86, 0.93, 1)
+colors = PackedColorArray(1, 0.97, 0.62, 1, 1, 0.84, 0.24, 1, 0.86, 0.58, 0.08, 1, 1, 0.8, 0.2, 1, 1, 0.86, 0.3, 1, 0.55, 0.32, 0.04, 1, 0.35, 0.2, 0.02, 1, 0.35, 0.2, 0.02, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5357l"]
+gradient = SubResource("Gradient_uxdf7")
+width = 96
+height = 96
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_iypfu"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 46
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 9
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qpprf"]
+content_margin_left = 14.0
+content_margin_top = 2.0
+content_margin_right = 14.0
+content_margin_bottom = 2.0
+bg_color = Color(0.12, 0.36, 0.14, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 1, 0.6, 0.6)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="LabelSettings" id="LabelSettings_3xg78"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 22
+font_color = Color(0.86, 1, 0.78, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_48y67"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 24
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_084dp"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 36
+outline_size = 7
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y2nlu"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.05, 0.09, 0.05, 0.7)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.3, 0.22, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_kp442"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+font_color = Color(1, 0.3, 0.22, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gltyx"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.25)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mgfyp"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 0.3, 0.22, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ptr5m"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.05, 0.09, 0.05, 0.7)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.82, 0.45, 1, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_of3ib"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+font_color = Color(0.82, 0.45, 1, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7600b"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.25)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e558t"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.82, 0.45, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frrke"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.05, 0.09, 0.05, 0.7)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.92, 1, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_vh1iw"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+font_color = Color(0.35, 0.92, 1, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgtve"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.25)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03o4m"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.35, 0.92, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dl6ww"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.05, 0.09, 0.05, 0.7)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.6, 1, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_8f8xv"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+font_color = Color(0.35, 0.6, 1, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_v0qwq"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 22
+font_color = Color(0.9, 0.95, 1, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yawqa"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 60
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 14
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qccye"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 34
+outline_size = 9
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flipt"]
+content_margin_left = 26.0
+content_margin_top = 16.0
+content_margin_right = 26.0
+content_margin_bottom = 16.0
+bg_color = Color(0.05, 0.1, 0.05, 0.82)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.84, 0.36, 0.8)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_uorui"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 30
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 8
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wi3kw"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 24
+font_color = Color(0.7, 1, 0.55, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ka0sb"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.4)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.6)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="LabelSettings" id="LabelSettings_7r3ka"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_snea0"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 24
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mvlge"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.4)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.6)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="LabelSettings" id="LabelSettings_fr0ct"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bp320"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 24
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rmale"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.4)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.6)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="LabelSettings" id="LabelSettings_ocxo2"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_x6b1a"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 24
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fmi02"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 10.0
+bg_color = Color(0.03, 0.06, 0.03, 0.66)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+
+[sub_resource type="LabelSettings" id="LabelSettings_nhf3q"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 30
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjt75"]
+content_margin_left = 34.0
+content_margin_top = 6.0
+content_margin_right = 34.0
+content_margin_bottom = 6.0
+bg_color = Color(0.03, 0.06, 0.03, 0.72)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+
+[sub_resource type="LabelSettings" id="LabelSettings_lvrsu"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 76
+outline_size = 16
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ydkem"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 28
+font_color = Color(0.92, 0.97, 0.88, 1)
+outline_size = 7
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6d1ax"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.03, 0.06, 0.03, 0.45)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.8)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="LabelSettings" id="LabelSettings_3hv7p"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 32
+outline_size = 8
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o1o2r"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 22
+font_color = Color(0.92, 0.97, 0.86, 1)
+outline_size = 5
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="Gradient" id="Gradient_qn0nn"]
+colors = PackedColorArray(0.02, 0.06, 0.02, 0.55, 0.02, 0.06, 0.02, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tks7v"]
+gradient = SubResource("Gradient_qn0nn")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cjy3n"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 150
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 30
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_offset = Vector2(8, 12)
+
+[sub_resource type="LabelSettings" id="LabelSettings_pwa8h"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 190
+font_color = Color(0.5, 0.96, 0.3, 1)
+outline_size = 34
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_offset = Vector2(8, 12)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gxo4v"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 34
+font_color = Color(1, 0.97, 0.88, 1)
+outline_size = 9
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2l8v3"]
+content_margin_left = 46.0
+content_margin_top = 12.0
+content_margin_right = 46.0
+content_margin_bottom = 12.0
+bg_color = Color(0.3, 0.74, 0.18, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.95, 1, 0.78, 1)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+
+[sub_resource type="LabelSettings" id="LabelSettings_66st5"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 50
+outline_size = 12
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1dsb4"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 36
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 10
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_q0uyn"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+font_color = Color(0.92, 0.97, 0.88, 1)
+outline_size = 7
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ep55p"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 26
+font_color = Color(1, 0.86, 0.35, 1)
+outline_size = 7
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dbhui"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 96
+font_color = Color(1, 0.84, 0.28, 1)
+outline_size = 20
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4hsw7"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 110
+outline_size = 20
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tj8l3"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 44
+font_color = Color(1, 0.55, 0.75, 1)
+outline_size = 12
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jhjt4"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 34
+font_color = Color(0.9, 0.97, 0.84, 1)
+outline_size = 8
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_d8y5i"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 34
+font_color = Color(1, 0.86, 0.45, 1)
+outline_size = 9
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ymiw"]
+content_margin_left = 34.0
+content_margin_top = 16.0
+content_margin_right = 34.0
+content_margin_bottom = 16.0
+bg_color = Color(0.04, 0.08, 0.04, 0.78)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.84, 0.36, 0.7)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="SystemFont" id="SystemFont_pca12"]
+font_names = PackedStringArray("Menlo", "SF Mono", "Consolas", "DejaVu Sans Mono", "monospace")
+font_weight = 700
+
+[sub_resource type="LabelSettings" id="LabelSettings_yu2oy"]
+line_spacing = 4.0
+font = SubResource("SystemFont_pca12")
+font_size = 30
+font_color = Color(0.96, 0.96, 0.9, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uud5u"]
+content_margin_left = 30.0
+content_margin_top = 8.0
+content_margin_right = 30.0
+content_margin_bottom = 8.0
+bg_color = Color(0.32, 0.76, 0.18, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.95, 1, 0.78, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg5fl"]
+content_margin_left = 30.0
+content_margin_top = 8.0
+content_margin_right = 30.0
+content_margin_bottom = 8.0
+bg_color = Color(0.24, 0.6, 0.12, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.95, 1, 0.78, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3oy6q"]
+content_margin_left = 30.0
+content_margin_top = 8.0
+content_margin_right = 30.0
+content_margin_bottom = 8.0
+bg_color = Color(0.4, 0.86, 0.24, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 0.9, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_57rap"]
+content_margin_left = 30.0
+content_margin_top = 8.0
+content_margin_right = 30.0
+content_margin_bottom = 8.0
+bg_color = Color(0.32, 0.76, 0.18, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_gc6e5"]
+font = SubResource("SystemFont_5n1hp")
+font_size = 22
+font_color = Color(0.85, 0.92, 0.8, 1)
+outline_size = 6
+outline_color = Color(0.1, 0.07, 0.03, 0.95)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_offset = Vector2(3, 5)
+
+[node name="HUD" type="CanvasLayer" unique_id=109479477]
+script = ExtResource("1_6fi6k")
+
+[node name="SpeedLines" type="ColorRect" parent="." unique_id=1060101587]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_hd3ao")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Danger" type="TextureRect" parent="." unique_id=312166863]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_mphia")
+expand_mode = 1
+
+[node name="TopRight" type="VBoxContainer" parent="." unique_id=709610414]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -640.0
+offset_top = 22.0
+offset_right = -28.0
+offset_bottom = 320.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="ScorePanel" type="PanelContainer" parent="TopRight" unique_id=1008392795]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0m4u7")
+
+[node name="Row" type="HBoxContainer" parent="TopRight/ScorePanel" unique_id=107522983]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="MultBadge" type="PanelContainer" parent="TopRight/ScorePanel/Row" unique_id=1494214434]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_apjy4")
+
+[node name="Multiplier" type="Label" parent="TopRight/ScorePanel/Row/MultBadge" unique_id=377857945]
+unique_name_in_owner = true
+layout_mode = 2
+text = "x2"
+label_settings = SubResource("LabelSettings_eld54")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="Label" parent="TopRight/ScorePanel/Row" unique_id=271404703]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_3swnk")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Distance" type="Label" parent="TopRight" unique_id=1440282747]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0 m"
+label_settings = SubResource("LabelSettings_qkknv")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CoinPanel" type="PanelContainer" parent="TopRight" unique_id=195258017]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0m4u7")
+
+[node name="Row" type="HBoxContainer" parent="TopRight/CoinPanel" unique_id=1135120005]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="TopRight/CoinPanel/Row" unique_id=1961571342]
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_5357l")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Coins" type="Label" parent="TopRight/CoinPanel/Row" unique_id=1314045197]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_iypfu")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TopLeft" type="VBoxContainer" parent="." unique_id=465854523]
+unique_name_in_owner = true
+offset_left = 28.0
+offset_top = 22.0
+offset_right = 640.0
+offset_bottom = 320.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="ModePill" type="PanelContainer" parent="TopLeft" unique_id=1413795075]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qpprf")
+
+[node name="Mode" type="Label" parent="TopLeft/ModePill" unique_id=1053616216]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FREE RUN"
+label_settings = SubResource("LabelSettings_3xg78")
+vertical_alignment = 1
+
+[node name="Chase" type="PanelContainer" parent="TopLeft" unique_id=898648787]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0m4u7")
+
+[node name="Box" type="VBoxContainer" parent="TopLeft/Chase" unique_id=1408160728]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -6
+
+[node name="ChaseWho" type="Label" parent="TopLeft/Chase/Box" unique_id=999409460]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CHASING AAA"
+label_settings = SubResource("LabelSettings_48y67")
+vertical_alignment = 1
+
+[node name="ChaseGap" type="Label" parent="TopLeft/Chase/Box" unique_id=569746117]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0 TO GO"
+label_settings = SubResource("LabelSettings_084dp")
+vertical_alignment = 1
+
+[node name="Powerups" type="VBoxContainer" parent="." unique_id=1298223551]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -300.0
+offset_right = 560.0
+offset_bottom = -28.0
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="PowerMagnet" type="PanelContainer" parent="Powerups" unique_id=481332638]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y2nlu")
+
+[node name="Row" type="HBoxContainer" parent="Powerups/PowerMagnet" unique_id=394809166]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="Control" parent="Powerups/PowerMagnet/Row" unique_id=698974076]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("3_047uy")
+
+[node name="Name" type="Label" parent="Powerups/PowerMagnet/Row" unique_id=91704071]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "MAGNET"
+label_settings = SubResource("LabelSettings_kp442")
+vertical_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="Powerups/PowerMagnet/Row" unique_id=1224003590]
+custom_minimum_size = Vector2(220, 20)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_gltyx")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mgfyp")
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
+[node name="PowerDouble" type="PanelContainer" parent="Powerups" unique_id=1119135847]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ptr5m")
+
+[node name="Row" type="HBoxContainer" parent="Powerups/PowerDouble" unique_id=1727588107]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="Control" parent="Powerups/PowerDouble/Row" unique_id=1912463189]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("3_047uy")
+kind = 2
+
+[node name="Name" type="Label" parent="Powerups/PowerDouble/Row" unique_id=1136315497]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "2X SCORE"
+label_settings = SubResource("LabelSettings_of3ib")
+vertical_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="Powerups/PowerDouble/Row" unique_id=883652224]
+custom_minimum_size = Vector2(220, 20)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_7600b")
+theme_override_styles/fill = SubResource("StyleBoxFlat_e558t")
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
+[node name="PowerSpring" type="PanelContainer" parent="Powerups" unique_id=140319471]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_frrke")
+
+[node name="Row" type="HBoxContainer" parent="Powerups/PowerSpring" unique_id=2069543278]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="Control" parent="Powerups/PowerSpring/Row" unique_id=1303636574]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("3_047uy")
+kind = 3
+
+[node name="Name" type="Label" parent="Powerups/PowerSpring/Row" unique_id=560275025]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "SPRING"
+label_settings = SubResource("LabelSettings_vh1iw")
+vertical_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="Powerups/PowerSpring/Row" unique_id=1379474868]
+custom_minimum_size = Vector2(220, 20)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_fgtve")
+theme_override_styles/fill = SubResource("StyleBoxFlat_03o4m")
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
+[node name="Shield" type="PanelContainer" parent="Powerups" unique_id=1162620266]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dl6ww")
+
+[node name="Row" type="HBoxContainer" parent="Powerups/Shield" unique_id=821903372]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="Control" parent="Powerups/Shield/Row" unique_id=1331698055]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_vertical = 4
+script = ExtResource("3_047uy")
+kind = 1
+
+[node name="Name" type="Label" parent="Powerups/Shield/Row" unique_id=707997790]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "SURF PLANK"
+label_settings = SubResource("LabelSettings_8f8xv")
+vertical_alignment = 1
+
+[node name="Note" type="Label" parent="Powerups/Shield/Row" unique_id=1270897920]
+layout_mode = 2
+text = "SAVES 1 CRASH"
+label_settings = SubResource("LabelSettings_v0qwq")
+vertical_alignment = 1
+
+[node name="Flash" type="ColorRect" parent="." unique_id=607899709]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="NearMiss" type="Label" parent="." unique_id=360117733]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_top = 0.11
+anchor_right = 1.0
+anchor_bottom = 0.11
+offset_top = -45.0
+offset_bottom = 45.0
+label_settings = SubResource("LabelSettings_yawqa")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Toast" type="Label" parent="." unique_id=841589319]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_top = 0.11
+anchor_right = 1.0
+anchor_bottom = 0.11
+offset_top = 44.0
+offset_bottom = 90.0
+label_settings = SubResource("LabelSettings_qccye")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Journal" type="PanelContainer" parent="." unique_id=1929753357]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -700.0
+offset_top = -120.0
+offset_right = -40.0
+offset_bottom = 110.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_flipt")
+
+[node name="Box" type="VBoxContainer" parent="Journal" unique_id=535152837]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Journal/Box" unique_id=270368264]
+layout_mode = 2
+text = "EXPEDITION JOURNAL"
+label_settings = SubResource("LabelSettings_uorui")
+vertical_alignment = 1
+
+[node name="JournalRank" type="Label" parent="Journal/Box" unique_id=1040294459]
+unique_name_in_owner = true
+layout_mode = 2
+text = "RANK 0"
+label_settings = SubResource("LabelSettings_wi3kw")
+vertical_alignment = 1
+
+[node name="Mission0" type="HBoxContainer" parent="Journal/Box" unique_id=414974614]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Tick" type="Panel" parent="Journal/Box/Mission0" unique_id=566146119]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ka0sb")
+
+[node name="Text" type="Label" parent="Journal/Box/Mission0" unique_id=1252178147]
+layout_mode = 2
+size_flags_horizontal = 3
+label_settings = SubResource("LabelSettings_7r3ka")
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="Journal/Box/Mission0" unique_id=605913007]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_snea0")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Mission1" type="HBoxContainer" parent="Journal/Box" unique_id=455995470]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Tick" type="Panel" parent="Journal/Box/Mission1" unique_id=1700664682]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mvlge")
+
+[node name="Text" type="Label" parent="Journal/Box/Mission1" unique_id=1638261340]
+layout_mode = 2
+size_flags_horizontal = 3
+label_settings = SubResource("LabelSettings_fr0ct")
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="Journal/Box/Mission1" unique_id=328144460]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_bp320")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Mission2" type="HBoxContainer" parent="Journal/Box" unique_id=1271442048]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Tick" type="Panel" parent="Journal/Box/Mission2" unique_id=1012028701]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rmale")
+
+[node name="Text" type="Label" parent="Journal/Box/Mission2" unique_id=876413300]
+layout_mode = 2
+size_flags_horizontal = 3
+label_settings = SubResource("LabelSettings_ocxo2")
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="Journal/Box/Mission2" unique_id=1824627303]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_x6b1a")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Hint" type="PanelContainer" parent="." unique_id=136451022]
+unique_name_in_owner = true
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -560.0
+offset_top = -118.0
+offset_right = 560.0
+offset_bottom = -40.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fmi02")
+
+[node name="Label" type="Label" parent="Hint" unique_id=2043416073]
+layout_mode = 2
+text = "← →  SWITCH LANE        ↑ / SPACE  JUMP        ↓  SLIDE"
+label_settings = SubResource("LabelSettings_nhf3q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coach" type="Control" parent="." unique_id=2145505652]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("4_5pdws")
+
+[node name="CoachCard" type="PanelContainer" parent="Coach" unique_id=162081513]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -330.0
+offset_top = -170.0
+offset_right = 330.0
+offset_bottom = -34.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tjt75")
+
+[node name="Box" type="VBoxContainer" parent="Coach/CoachCard" unique_id=837954950]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -8
+alignment = 1
+
+[node name="CoachVerb" type="Label" parent="Coach/CoachCard/Box" unique_id=414721629]
+unique_name_in_owner = true
+layout_mode = 2
+text = "JUMP"
+label_settings = SubResource("LabelSettings_lvrsu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CoachSub" type="Label" parent="Coach/CoachCard/Box" unique_id=445955161]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_ydkem")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CoachTag" type="PanelContainer" parent="Coach" unique_id=635609229]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6d1ax")
+
+[node name="Box" type="VBoxContainer" parent="Coach/CoachTag" unique_id=1293222532]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -4
+
+[node name="TagName" type="Label" parent="Coach/CoachTag/Box" unique_id=1558615085]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_3hv7p")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TagSub" type="Label" parent="Coach/CoachTag/Box" unique_id=592080024]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_o1o2r")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleScreen" type="Control" parent="." unique_id=405798597]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Band" type="TextureRect" parent="TitleScreen" unique_id=1735121274]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 0.45
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_tks7v")
+expand_mode = 1
+
+[node name="Logo" type="VBoxContainer" parent="TitleScreen" unique_id=1804863298]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_right = 0.55
+offset_left = 60.0
+offset_top = 50.0
+offset_bottom = 420.0
+mouse_filter = 2
+theme_override_constants/separation = -40
+
+[node name="Jungle" type="Label" parent="TitleScreen/Logo" unique_id=2056802387]
+layout_mode = 2
+text = "JUNGLE"
+label_settings = SubResource("LabelSettings_cjy3n")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Dash" type="Label" parent="TitleScreen/Logo" unique_id=344377765]
+layout_mode = 2
+text = "DASH"
+label_settings = SubResource("LabelSettings_pwa8h")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tagline" type="Label" parent="TitleScreen/Logo" unique_id=488773420]
+layout_mode = 2
+text = "run.  jump.  don't get caught."
+label_settings = SubResource("LabelSettings_gxo4v")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PressStart" type="PanelContainer" parent="TitleScreen" unique_id=2124832784]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -330.0
+offset_top = -250.0
+offset_right = 330.0
+offset_bottom = -150.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2l8v3")
+
+[node name="Label" type="Label" parent="TitleScreen/PressStart" unique_id=1857384020]
+layout_mode = 2
+text = "PRESS SPACE TO RUN"
+label_settings = SubResource("LabelSettings_66st5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleBest" type="Label" parent="TitleScreen" unique_id=1856563456]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -134.0
+offset_bottom = -90.0
+label_settings = SubResource("LabelSettings_1dsb4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleHelp" type="Label" parent="TitleScreen" unique_id=455412569]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -84.0
+offset_bottom = -44.0
+text = "← → lanes     ↑ jump     ↓ slide     M  daily challenge     C  coach"
+label_settings = SubResource("LabelSettings_q0uyn")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EmbedNote" type="Label" parent="TitleScreen" unique_id=424947899]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+offset_top = 10.0
+offset_bottom = 48.0
+label_settings = SubResource("LabelSettings_ep55p")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOver" type="Control" parent="." unique_id=1993666896]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Dim" type="ColorRect" parent="GameOver" unique_id=367136427]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.02, 0.05, 0.02, 0.62)
+
+[node name="Box" type="VBoxContainer" parent="GameOver" unique_id=584532315]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Title" type="Label" parent="GameOver/Box" unique_id=1080975473]
+unique_name_in_owner = true
+layout_mode = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_dbhui")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FinalScore" type="Label" parent="GameOver/Box" unique_id=1642057103]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_4hsw7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NewBest" type="Label" parent="GameOver/Box" unique_id=1596465548]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NEW BEST!"
+label_settings = SubResource("LabelSettings_tj8l3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stats" type="Label" parent="GameOver/Box" unique_id=1014982483]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0 m    0 coins"
+label_settings = SubResource("LabelSettings_jhjt4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Why" type="Label" parent="GameOver/Box" unique_id=602670978]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_d8y5i")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Board" type="PanelContainer" parent="GameOver/Box" unique_id=1241526371]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ymiw")
+
+[node name="Result" type="Label" parent="GameOver/Box/Board" unique_id=1015369881]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_yu2oy")
+
+[node name="RestartButton" type="Button" parent="GameOver/Box" unique_id=2046760585]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 92)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_uud5u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tg5fl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3oy6q")
+theme_override_styles/focus = SubResource("StyleBoxFlat_57rap")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.9, 1, 0.85, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.9, 1)
+theme_override_fonts/font = SubResource("SystemFont_5n1hp")
+theme_override_font_sizes/font_size = 44
+theme_override_constants/outline_size = 10
+theme_override_colors/font_outline_color = Color(0.08, 0.25, 0.04, 1)
+text = "RUN AGAIN"
+
+[node name="Footer" type="Label" parent="GameOver/Box" unique_id=1115650949]
+unique_name_in_owner = true
+layout_mode = 2
+label_settings = SubResource("LabelSettings_gc6e5")
+horizontal_alignment = 1
+vertical_alignment = 1

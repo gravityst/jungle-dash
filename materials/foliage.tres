@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" path="res://shaders/foliage.gdshader" id="1_xsojn"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xsojn")
+shader_parameter/albedo = Color(0.1, 0.3, 0.15, 1)
+shader_parameter/sway_amp = 0.11
+shader_parameter/sway_speed = 1.0
+shader_parameter/mask_start = 1.2
+shader_parameter/mask_range = 3.0
+shader_parameter/tint_amount = 0.12

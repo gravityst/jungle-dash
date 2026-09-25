@@ -1,0 +1,22 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Shader" path="res://shaders/ink_outline.gdshader" id="1_f0o15"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_npga7"]
+render_priority = 1
+shader = ExtResource("1_f0o15")
+shader_parameter/ink = null
+shader_parameter/min_width = 0.035
+shader_parameter/px_width = null
+shader_parameter/max_width = null
+
+[resource]
+next_pass = SubResource("ShaderMaterial_npga7")
+albedo_color = Color(0.98, 0.6, 0.16, 1)
+metallic_specular = 0.22
+roughness = 0.78
+rim_enabled = true
+rim = 0.35
+rim_tint = 0.6
+stencil_mode = 3
+stencil_flags = 2
