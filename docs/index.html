@@ -99,6 +99,7 @@ body, #status { background-color: #0e2418 !important; }
 #jd-title { font: 800 clamp(40px, 8vw, 88px)/1 'Avenir Next', 'Trebuchet MS', system-ui, sans-serif; letter-spacing: 0.08em; color: #f2d16b; text-align: center; margin: 0 16px 28px; }
 #jd-hint { font: 500 15px/1.5 'Avenir Next', system-ui, sans-serif; color: #b9cdbf; text-align: center; margin: 22px 16px 0; }
 #status-progress { width: min(320px, 70vw); accent-color: #f2d16b; }
+#jd-step { font: 500 14px/1.4 'Avenir Next', system-ui, sans-serif; color: #b9cdbf; text-align: center; margin: 14px 16px 0; min-height: 1.4em; }
 </style>
 <script>
 (function () {
@@ -120,7 +121,119 @@ document.addEventListener('DOMContentLoaded', function () {
 	h.id = 'jd-hint';
 	h.textContent = 'Arrow keys or WASD to run, Space to jump. On a phone or tablet, swipe.';
 	s.appendChild(h);
+	var st = document.createElement('div');
+	st.id = 'jd-step';
+	var bar = document.getElementById('status-progress');
+	s.insertBefore(st, bar ? bar.nextSibling : null);
 });
+(function () {
+	// Shader warm-up. The Compatibility renderer compiles every shader the first frame needs one at a
+	// time, inside that frame, while the page sits frozen on the loading screen: about 23 s on a Mac on a
+	// first visit and much longer on a phone, which looks like a hang at 100%. jd-shaders.json lists the
+	// programs Godot links for that frame. Compiling them here, in a throwaway context, in parallel
+	// (KHR_parallel_shader_compile) and while the game downloads, fills the browser's shader cache, so
+	// Godot's own compiles become cache hits. Anything missing (no WebGL2, no extension, no file) skips it.
+	var NL = String.fromCharCode(10), W = window.jdWarm = { total: 0, done: 0 };
+	var recording = location.search.indexOf('record-shaders') >= 0;
+	function warm() {
+		var gl = document.createElement('canvas').getContext('webgl2', { alpha: false, depth: true, stencil: false, antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: true });
+		var par = gl && gl.getExtension('KHR_parallel_shader_compile');
+		if (!par) return Promise.resolve();
+		gl.getSupportedExtensions().forEach(function (e) { gl.getExtension(e); });
+		return fetch('jd-shaders.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (m) {
+			if (!m || m.v !== 1) return;
+			var src = m.src.map(function (r) { var out = []; for (var i = 0; i < r.length; i += 2) for (var j = 0; j < r[i + 1]; j++) out.push(m.lines[r[i] + j]); return out.join(NL); });
+			var made = [];
+			function shader(i, type) { if (!made[i]) { made[i] = gl.createShader(type); gl.shaderSource(made[i], src[i]); gl.compileShader(made[i]); } return made[i]; }
+			var progs = m.prog.map(function (p) { var pr = gl.createProgram(); gl.attachShader(pr, shader(p[0], gl.VERTEX_SHADER)); gl.attachShader(pr, shader(p[1], gl.FRAGMENT_SHADER)); gl.linkProgram(pr); return pr; });
+			W.total = progs.length;
+			return new Promise(function (resolve) {
+				(function poll() {
+					while (W.done < W.total && !gl.isContextLost() && gl.getProgramParameter(progs[W.done], par.COMPLETION_STATUS_KHR)) W.done++;
+					if (W.done >= W.total || gl.isContextLost()) resolve(); else setTimeout(poll, 50);
+				})();
+			});
+		}).then(function () { var l = gl.getExtension('WEBGL_lose_context'); if (l) l.loseContext(); });
+	}
+	W.ready = recording ? Promise.resolve() : warm().catch(function () {});
+	// Hold Godot's start (the frozen part) until the warm-up is done, at most 30 s.
+	document.addEventListener('DOMContentLoaded', function () {
+		if (typeof engine === 'undefined' || !engine.start) return;
+		var start = engine.start;
+		engine.start = function () {
+			var me = this, args = arguments, step = document.getElementById('jd-step');
+			var tick = setInterval(function () { if (step && W.total) step.textContent = 'Warming up the jungle ' + Math.round(100 * W.done / W.total) + '%'; }, 100);
+			return Promise.race([W.ready, new Promise(function (r) { setTimeout(r, 30000); })]).then(function () {
+				clearInterval(tick);
+				if (step) step.textContent = 'Almost there…';
+				return new Promise(function (r) { setTimeout(r, 30); });
+			}).then(function () { return start.apply(me, args); });
+		};
+	});
+	// Godot's loader never handles a failed WebAssembly compile, so on a phone that runs out of memory the
+	// page would sit on the loading screen for ever. Say so instead.
+	var wis = WebAssembly.instantiateStreaming;
+	if (wis) WebAssembly.instantiateStreaming = function () {
+		var p = wis.apply(WebAssembly, arguments);
+		p.catch(function (e) {
+			var n = document.getElementById('status-notice'), bar = document.getElementById('status-progress');
+			if (!n || !document.getElementById('status')) return;
+			n.textContent = 'This device could not start the game (' + ((e && e.message) || e) + '). Close other tabs and reload the page.';
+			n.style.display = 'block';
+			if (bar) bar.style.display = 'none';
+		});
+		return p;
+	};
+	if (!recording) return;
+	// index.html?record-shaders: record the programs Godot links, then call jdSaveShaders() in the
+	// console to download a fresh jd-shaders.json for docs/ (after changing materials or the renderer).
+	var progs = new Map(), types = new Map(), srcs = new Map(), att = new Map(), getContext = HTMLCanvasElement.prototype.getContext;
+	HTMLCanvasElement.prototype.getContext = function (t) {
+		var gl = getContext.apply(this, arguments);
+		if (gl && t === 'webgl2' && !gl.jdRec) {
+			gl.jdRec = 1;
+			['createShader', 'shaderSource', 'attachShader', 'linkProgram'].forEach(function (n) {
+				var f = gl[n];
+				gl[n] = function (x, y) {
+					var r = f.apply(gl, arguments);
+					if (n === 'createShader') types.set(r, x);
+					else if (n === 'shaderSource') srcs.set(x, y);
+					else if (n === 'attachShader') { if (!att.has(x)) att.set(x, []); att.get(x).push(y); }
+					else {
+						var v = (att.get(x) || []).filter(function (h) { return types.get(h) === gl.VERTEX_SHADER; })[0];
+						var fr = (att.get(x) || []).filter(function (h) { return types.get(h) === gl.FRAGMENT_SHADER; })[0];
+						if (v && fr) progs.set(srcs.get(v) + String.fromCharCode(0) + srcs.get(fr), [srcs.get(v), srcs.get(fr)]);
+					}
+					return r;
+				};
+			});
+		}
+		return gl;
+	};
+	window.jdShaderManifest = function () {
+		var lineAt = new Map(), lines = [], srcAt = new Map(), src = [], prog = [];
+		function add(s) {
+			if (srcAt.has(s)) return srcAt.get(s);
+			var runs = [];
+			s.split(NL).forEach(function (line) {
+				var k = lineAt.get(line);
+				if (k === undefined) { k = lines.length; lines.push(line); lineAt.set(line, k); }
+				var n = runs.length;
+				if (n && runs[n - 2] + runs[n - 1] === k) runs[n - 1]++; else runs.push(k, 1);
+			});
+			srcAt.set(s, src.length); src.push(runs);
+			return src.length - 1;
+		}
+		progs.forEach(function (p) { prog.push([add(p[0]), add(p[1])]); });
+		return JSON.stringify({ v: 1, lines: lines, src: src, prog: prog });
+	};
+	window.jdSaveShaders = function () {
+		var a = document.createElement('a');
+		a.href = URL.createObjectURL(new Blob([jdShaderManifest()], { type: 'application/json' }));
+		a.download = 'jd-shaders.json';
+		a.click();
+	};
+})();
 </script>
 	</head>
 	<body>
